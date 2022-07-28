@@ -1,0 +1,50 @@
+@startuml sms-campaign
+autonumber
+
+actor User as u
+participant Frontend as f
+participant "SMS bulk sender" as bs
+participant Softswitch as sw
+
+== Create campaign ==
+u -> f: Set campaign params
+activate u
+activate f
+f -> bs: Save campaign params
+activate bs
+bs --> f: Campaign
+deactivate bs
+f --> u: Campaign
+deactivate f
+
+== Send imideatly ==
+
+u -> f: Start campaign
+activate f
+f -> bs: Start campaign
+activate bs
+bs -> f: Campaign started
+f -> u: Started
+deactivate f
+deactivate u
+loop
+bs -> sw: Send sms
+activate sw
+sw --> bs: Sms state
+deactivate sw
+bs -> bs: Save sms state
+end loop
+deactivate bs
+== Check campaign state ==
+
+u -> f: Check campaign
+activate u
+activate f
+f -> bs: Check campaign state
+activate bs
+bs --> f: State
+deactivate bs
+f --> u: State
+deactivate f
+deactivate u
+@enduml
