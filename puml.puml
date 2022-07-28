@@ -1,0 +1,22 @@
+@startuml script
+actor ОНОЛИТЕГ as a
+participant "Ветка анализа" as va
+actor ПОГРОМИСТ as d
+participant "Ветка разработки" as da
+participant master as m
+
+a o-> va: Создает ветку анализа
+activate va
+a o-> da: Создает ветку разработки
+activate da
+a o-> va: Создает Pull request
+d o->va: Ревью
+a o-> va: Merge согласованной документации
+va -> da: Merge согласованной документации
+deactivate va
+d o-> da: Разработка
+d o-> da: Ревью
+d o-> da: Merge кода и документации
+da ->o m: Merge кода и документации
+deactivate da
+@enduml
